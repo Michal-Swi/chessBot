@@ -310,8 +310,11 @@ class Knight extends Piece {
 	move() {
 		let from = Piece.convertFrom(move);
 		let to = Piece.convertTo(move);
-										
-		if (to[0] - 3 === from[0]) {
+
+		console.log(from);
+		console.log(to);
+
+		if (to[0] - 2 === from[0]) {
 			if (to[1] + 1 === from[1] && (!(board[to[0]][to[1]] instanceof Piece) || 
 				(board[from[0]][from[1]].color && !(board[to[0]][to[1]].color)) || 
 				!(board[from[0]][from[1]].color) && board[to[0]][to[1]].color)) {
@@ -320,8 +323,8 @@ class Knight extends Piece {
 				(board[from[0]][from[1]].color && !(board[to[0]][to[1]].color)) || 
 				!(board[from[0]][from[1]].color) && board[to[0]][to[1]].color)) {
 				return true;
-			}
-		} else if (to[0] + 3 === from[0]) {
+			} else return false;
+		} else if (to[0] + 2 === from[0]) {
 			if (to[1] + 1 === from[1] && (!(board[to[0]][to[1]] instanceof Piece) || 
 				(board[from[0]][from[1]].color && !(board[to[0]][to[1]].color)) || 
 				!(board[from[0]][from[1]].color) && board[to[0]][to[1]].color)) {
@@ -330,8 +333,8 @@ class Knight extends Piece {
 				(board[from[0]][from[1]].color && !(board[to[0]][to[1]].color)) || 
 				!(board[from[0]][from[1]].color) && board[to[0]][to[1]].color)) {
 				return true;
-			}
-		} else if (to[1] - 3 === from[1]) {
+			} else return false;
+		} else if (to[1] - 2 === from[1]) {
 			if (to[0] + 1 === from[0] && (!(board[to[0]][to[1]] instanceof Piece) || 
 				(board[from[0]][from[1]].color && !(board[to[0]][to[1]].color)) || 
 				!(board[from[0]][from[1]].color) && board[to[0]][to[1]].color)) {
@@ -340,8 +343,8 @@ class Knight extends Piece {
 				(board[from[0]][from[1]].color && !(board[to[0]][to[1]].color)) || 
 				!(board[from[0]][from[1]].color) && board[to[0]][to[1]].color)) {
 				return true;
-			}
-		} else if (to[1] + 3 === from[1]) {
+			} else return false;
+		} else if (to[1] + 2 === from[1]) {
 			if (to[0] + 1 === from[0] && (!(board[to[0]][to[1]] instanceof Piece) || 
 				(board[from[0]][from[1]].color && !(board[to[0]][to[1]].color)) || 
 				!(board[from[0]][from[1]].color) && board[to[0]][to[1]].color)) {
@@ -350,7 +353,7 @@ class Knight extends Piece {
 				(board[from[0]][from[1]].color && !(board[to[0]][to[1]].color)) || 
 				!(board[from[0]][from[1]].color) && board[to[0]][to[1]].color)) {
 				return true;
-			}
+			} else return false;
 		} else return false;
 	}
 }
@@ -391,6 +394,7 @@ let board = [[new Rook(Color.White), new Knight(Color.White), new Bishop(Color.W
 			[new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black)],
 			[new Rook(Color.Black), new Knight(Color.Black), new Bishop(Color.Black), new Queen(Color.White), new King(Color.Black), new Bishop(Color.Black), new Knight(Color.Black), new Rook(Color.Black)]];
 
-let move = 'A2 - C3';
+let move = 'C6 - B8';
 
-console.log(board[0][1].move(move));
+console.log(board[5][2]);
+console.log(board[5][2].move(move));
