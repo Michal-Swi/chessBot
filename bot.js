@@ -10,6 +10,7 @@ bot.on('ready', () => {
 });
 
 let players = [null, null];
+
 let playerName = [null, null];
 let game = false;
 let board = [['W', 'S', 'G', 'H', 'K', 'G', 'S', 'W'],
