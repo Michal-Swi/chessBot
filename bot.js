@@ -2,7 +2,7 @@ const { Client } = require('discord.js');
 const bot = new Client();
 
 
-const BOT_TOKEN = 'a';
+const BOT_TOKEN =;
 bot.login(BOT_TOKEN);
 
 bot.on('ready', () => {
@@ -22,11 +22,11 @@ let board = [['W', 'S', 'G', 'H', 'K', 'G', 'S', 'W'],
 			['w', 's', 'g', 'h', 'k', 'g', 's', 'w']];
 
 function boardPrint(message) {
-	board.forEach( 
+	board.forEach(
 		sub => {
 			let s = "";
-			sub.forEach(char => s += char) 
-			message.channel.send(s); 
+			sub.forEach(char => s += char)
+			message.channel.send(s);
 	});
 }
 
