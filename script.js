@@ -255,8 +255,16 @@ class Pawn extends Piece {
 
 class Rook extends Piece {
 	move() {
-		let from = Piece.convertFrom(move);
-		let to = Piece.convertTo(move);
+		let from = 0;
+		let to = 0;
+		
+		if (isNaN(move[0]) && isNaN(move[2])) {
+			from = Piece.convertFrom(move);
+			to = Piece.convertTo(move);
+		} else {
+			from = [move[0], move[1]];
+			to = [move[2], move[3]];
+		}
 
 		if (from[0] !== to[0] && from[1] !== to[1]) return false;
 
@@ -274,8 +282,16 @@ class Rook extends Piece {
 
 class Bishop extends Piece {
 	move() {
-		let from = Piece.convertFrom(move);
-		let to = Piece.convertTo(move);
+		let from = 0;
+		let to = 0;
+		
+		if (isNaN(move[0]) && isNaN(move[2])) {
+			from = Piece.convertFrom(move);
+			to = Piece.convertTo(move);
+		} else {
+			from = [move[0], move[1]];
+			to = [move[2], move[3]];
+		}
 
 		if (to[0] > from[0] && to[1] > from[1]) {
 			return this.diagonalRightUp();
@@ -291,8 +307,16 @@ class Bishop extends Piece {
 
 class Queen extends Piece {
 	move() {
-		let from = Piece.convertFrom(move);
-		let to = Piece.convertTo(move);
+		let from = 0;
+		let to = 0;
+		
+		if (isNaN(move[0]) && isNaN(move[2])) {
+			from = Piece.convertFrom(move);
+			to = Piece.convertTo(move);
+		} else {
+			from = [move[0], move[1]];
+			to = [move[2], move[3]];
+		}
 
 		if (from[0] === to[0] || from[1] === to[1]) {
 			if (from[0] !== to[0] && from[1] !== to[1]) return false;
@@ -321,9 +345,23 @@ class Queen extends Piece {
 }
 
 class Knight extends Piece {
-	move() {
-		let from = Piece.convertFrom(move);
-		let to = Piece.convertTo(move);
+	move(temp) {
+		let from = 0;
+		let to = 0;
+
+		if (isNaN(move[0]) && isNaN(move[2])) {
+			from = Piece.convertFrom(move);
+			to = Piece.convertTo(move);
+		} else {
+			from = [temp[0], temp[1]];
+			to = [temp[2], temp[3]];
+		}
+
+		console.log(temp);
+
+		console.log('');
+		console.log(from);
+		console.log(to);
 
 		if (to[0] - 2 === from[0]) {
 			if (to[1] + 1 === from[1] && (!(board[to[0]][to[1]] instanceof Piece) || 
@@ -376,10 +414,11 @@ class King extends Piece {
 		for (let i = 0; i < 8; i++) {
 			for (let j = 0; j < 8; j++) {
 				if (i !== pieceLocation[0] && j !== pieceLocation[1]) {
-					if (board[i][j].color !== board[pieceLocation[0]][pieceLocation[1]].color) {
-						//I have to convert to the chess notation in order to use the move function
+					if (board[i][j] instanceof Piece && board[i][j].color !== board[pieceLocation[0]][pieceLocation[1]].color) {
+						let temp = [i, j, pieceLocation[0], pieceLocation[1]];
 
-
+						console.log(temp);
+						return board[i][j].move(temp);
 					}
 				}
 			}
@@ -446,14 +485,13 @@ class King extends Piece {
 
 let board = [[new Rook(Color.White), new Knight(Color.White), new Bishop(Color.White), new Queen(Color.White), new King(Color.White), new Bishop(Color.White), new Knight(Color.White), new Rook(Color.White)],
 			[new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White)],
-			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+			['O', 'O', 'O', new Knight(Color.Black), 'O', 'O', 'O', 'O'],
 			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
 			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
 			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
 			[new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black)],
 			[new Rook(Color.Black), new Knight(Color.Black), new Bishop(Color.Black), new Queen(Color.White), new King(Color.Black), new Bishop(Color.Black), new Knight(Color.Black), new Rook(Color.Black)]];
 
-let move = 'E1 - H1';
+let move = [0, 4];
 
-console.log(board[0][4]);
-console.log(board[0][4].move(move));
+console.log(board[0][4].inCheck(move));
