@@ -1,8 +1,9 @@
 /*      T O D O      
-     King Check
+     King Check - done
      King Castle - done
      Pawn to Piece
-     King movement
+     King movement - done
+     en pesant 
    				     */
 
 const Color = {
@@ -357,12 +358,6 @@ class Knight extends Piece {
 			to = [temp[2], temp[3]];
 		}
 
-		console.log(temp);
-
-		console.log('');
-		console.log(from);
-		console.log(to);
-
 		if (to[0] - 2 === from[0]) {
 			if (to[1] + 1 === from[1] && (!(board[to[0]][to[1]] instanceof Piece) || 
 				(board[from[0]][from[1]].color && !(board[to[0]][to[1]].color)) || 
@@ -466,18 +461,35 @@ class King extends Piece {
 		return false;
 	}
 
+	//king has some limitations on wheter it can move
+	canMove(from, to) {
+		if (this.inCheck(to)) {
+			return false;
+		}
+
+		if (!(board[to[0]][to[1]] instanceof Piece)) {
+			return true;
+		}
+
+		if (board[from[0]][from[1]].color !== board[to[0]][to[1]].color) {
+			return true;
+		} else {
+			return false;
+		}
+	}	
+
 	move() {
         let from = Piece.convertFrom(move);
         let to = Piece.convertTo(move);
 
-        if (from[0] + 1 === to[0] && from[1] === to[1] && !(board[to[0]][to[1]] instanceof Piece)) return true;
-        if (from[0] - 1 === to[0] && from[1] === to[1] && !(board[to[0]][to[1]] instanceof Piece)) return true;
-        if (from[0] === to[0] && from[1] + 1 === to[1] && !(board[to[0]][to[1]] instanceof Piece)) return true;
-        if (from[0] === to[0] && from[1] - 1 === to[1] && !(board[to[0]][to[1]] instanceof Piece)) return true;
-        if (from[0] - 1 === to[0] && from[1] + 1 === to[1] && !(board[to[0]][to[1]] instanceof Piece)) return true;
-        if (from[0] - 1 === to[0] && from[1] - 1 === to[1] && !(board[to[0]][to[1]] instanceof Piece)) return true;
-        if (from[0] + 1 === to[0] && from[1] - 1 === to[1] && !(board[to[0]][to[1]] instanceof Piece)) return true;
-        if (from[0] + 1 === to[0] && from[1] + 1 === to[1] && !(board[to[0]][to[1]] instanceof Piece)) return true;
+        if (from[0] + 1 === to[0] && from[1] === to[1] && canMove(from, to)) return true;
+        if (from[0] - 1 === to[0] && from[1] === to[1] && canMove(from, to)) return true;
+        if (from[0] === to[0] && from[1] + 1 === to[1] && canMove(from, to)) return true;
+        if (from[0] === to[0] && from[1] - 1 === to[1] && canMove(from, to)) return true;
+        if (from[0] - 1 === to[0] && from[1] + 1 === to[1] && canMove(from, to)) return true;
+        if (from[0] - 1 === to[0] && from[1] - 1 === to[1] && canMove(from, to)) return true;
+        if (from[0] + 1 === to[0] && from[1] - 1 === to[1] && canMove(from, to)) return true;
+        if (from[0] + 1 === to[0] && from[1] + 1 === to[1] && canMove(from, to)) return true;
 		if (this.castle()) return true;
         return false;
 	}
@@ -485,13 +497,13 @@ class King extends Piece {
 
 let board = [[new Rook(Color.White), new Knight(Color.White), new Bishop(Color.White), new Queen(Color.White), new King(Color.White), new Bishop(Color.White), new Knight(Color.White), new Rook(Color.White)],
 			[new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White)],
-			['O', 'O', 'O', new Knight(Color.Black), 'O', 'O', 'O', 'O'],
+			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
 			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
 			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
 			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
 			[new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black)],
 			[new Rook(Color.Black), new Knight(Color.Black), new Bishop(Color.Black), new Queen(Color.White), new King(Color.Black), new Bishop(Color.Black), new Knight(Color.Black), new Rook(Color.Black)]];
 
-let move = [0, 4];
+let move = 'E2 - E4';
 
-console.log(board[0][4].inCheck(move));
+console.log(board[1][4].move(move));
