@@ -6,6 +6,8 @@
      en pesant 
    				     */
 
+const fs = require('fs');
+
 const Color = {
 	White: true,
 	Black: false
@@ -219,6 +221,9 @@ class Piece {
     	return 0;
     }
 }
+
+//							B E W A R E 
+//the following code is a result of a deep sleep deprevation and alcohol use!
 
 class Pawn extends Piece {
 	move() {
@@ -495,15 +500,49 @@ class King extends Piece {
 	}
 }
 
-let board = [[new Rook(Color.White), new Knight(Color.White), new Bishop(Color.White), new Queen(Color.White), new King(Color.White), new Bishop(Color.White), new Knight(Color.White), new Rook(Color.White)],
-			[new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White), new Pawn(Color.White)],
-			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			[new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black), new Pawn(Color.Black)],
-			[new Rook(Color.Black), new Knight(Color.Black), new Bishop(Color.Black), new Queen(Color.White), new King(Color.Black), new Bishop(Color.Black), new Knight(Color.Black), new Rook(Color.Black)]];
-
 let move = 'E2 - E4';
 
-console.log(board[1][4].move(move));
+let data = fs.readFileSync('board.txt', 'utf8');
+
+function boardAssign(data) {
+	let s = "";
+	let n = 0;
+	let where = 0;
+	let board = [['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']];
+
+	for (let i = 0; i < 71; i++) {
+		s += data[i];
+		n++;
+		if (n === 9) {
+			for (let i = 0; i < 8; i++) {
+				board[where][i] = s[i];
+			}
+
+			where[0]++;
+			n = 0;
+			s = "";
+		} 
+	}
+
+	for (let i = 0; i < 8; i++) {
+		board[where][i] = s[i];
+	}
+
+	for (let i = 0; i < 8; i++) {
+		let s = "";
+		for (let j = 0; j < 8; j++) {
+			s += board[i][j];
+		}
+		console.log(s);
+		s = "";
+	}
+}
+
+boardAssign(data);

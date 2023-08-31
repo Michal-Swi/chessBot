@@ -1,26 +1,13 @@
 const { Client } = require('discord.js');
+const fs = require('fs');
 const bot = new Client();
 
-
-const BOT_TOKEN =;
+const BOT_TOKEN = 'MTA1NjU0OTM1NzI1MzU2MjQ4MQ.GlToiH.XdgD_A5Q2g3kR-uTOi8PQqXQgw8tTx0s1CoBBQ';
 bot.login(BOT_TOKEN);
 
 bot.on('ready', () => {
   console.log(`Logged in as ${bot.user.tag}!`);
 });
-
-let players = [null, null];
-
-let playerName = [null, null];
-let game = false;
-let board = [['W', 'S', 'G', 'H', 'K', 'G', 'S', 'W'],
-			['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
-			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-			['w', 's', 'g', 'h', 'k', 'g', 's', 'w']];
 
 function boardPrint(message) {
 	board.forEach(
@@ -31,47 +18,31 @@ function boardPrint(message) {
 	});
 }
 
-function chessBoard(message) {
-	let color = Math.random() % 2;
-
-	if (color >= 0.5) {
-		message.channel.send(`<@${players[0]}> Will be white`);
-		message.channel.send(`<@${players[1]}> Will be black`);
-
-		let white = players[0];
-		let black = players[1];
-	} else {
-		message.channel.send(`<@${players[1]}> Will be white`);
-		message.channel.send(`<@${players[0]}> Will be black`);
-
-		let white = players[1];
-		let black = players[0];
-	}
-
-	boardPrint(message);
-
-}
+let players = new Map();
+let board = new Map();
+let temporaryPlayers = [null, null];
 
 bot.on('message', (message) => {
 	console.log(message.content);
-	if (message.content === '!ping') {
+	if (message.content === '!ping' || message.content === '!Ping') {
 		message.channel.send('Pong!');
 	}
 
-	if (message.content === '!play' && game !== true && players[0] === null) {
-		players[0] = message.author.id;
-		playerName[0] = message.author.username;
-	} else if (message.content === '!play' && game !== true && players[0] != message.author.id) {
-		players[1] = message.author.id;
-		playerName = message.author.username;
+	if (message.content === '!play' && temporaryPlayers[0] === null) {
+		temporaryPlayers[0] = message.author.id;
+	} else if (message.content === '!play' && temporaryPlayers[0] !== null) {
+		temporaryPlayers[1] = message.author.id;
 
-		console.log(playerName[0]);
-		console.log(playerName[1]);
+		message.channel.send(`Player 1 <@${temporaryPlayers[0]}>`);
+		message.channel.send(`Player 2 <@${temporaryPlayers[1]}>`);
 
-		game = true;
+		players.set(temporaryPlayers[0], temporaryPlayers[1]);
+		players.set(temporaryPlayers[1], temporaryPlayers[0]);
+
+		temporaryPlayers = [null, null];
+
+		console.log(message.guild.name);
+
 		message.channel.send('The game will begin shortly!');
-		chessBoard(message);
-	} else if (message.content === '!play' && game === true) {
-		message.channel.send('You need to wait until the current game will stop!');
 	}
 });
