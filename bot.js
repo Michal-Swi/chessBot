@@ -2,13 +2,9 @@ const { Client } = require('discord.js');
 const fs = require('fs');
 const bot = new Client();
 
-<<<<<<< HEAD
 let token = fs.readFileSync('Token.txt', 'utf8');
 
 const BOT_TOKEN = token;
-=======
-const BOT_TOKEN;
->>>>>>> 0656a2cdf813f3b1f8f45c83fd6ed40b6e567706
 bot.login(BOT_TOKEN);
 
 bot.on('ready', () => {
