@@ -508,16 +508,13 @@ function boardAssign(data) {
 	let s = "";
 	let n = 0;
 	let where = 0;
-	let board = [['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-			    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']];
+	let board = new Array(9);
 
-	for (let i = 0; i < 71; i++) {
+	for (let i = 0; i < 9; i++) {
+		board[i] = new Array(8);
+	}
+
+	for (let i = 0; i < data.length; i++) {
 		s += data[i];
 		n++;
 		if (n === 9) {
@@ -525,24 +522,54 @@ function boardAssign(data) {
 				board[where][i] = s[i];
 			}
 
-			where[0]++;
+			where++;
 			n = 0;
 			s = "";
 		} 
 	}
 
 	for (let i = 0; i < 8; i++) {
-		board[where][i] = s[i];
-	}
-
-	for (let i = 0; i < 8; i++) {
-		let s = "";
 		for (let j = 0; j < 8; j++) {
-			s += board[i][j];
+			if (board[i][j] === 'W') {
+				board[i][j] = new Rook(Color.White);
+			} else if (board[i][j] === 'S') {
+				board[i][j] = new Knight(Color.White);
+			} else if (board[i][j] === 'G') {
+				board[i][j] = new Bishop(Color.White);
+			} else if (board[i][j] === 'H') {
+				board[i][j] = new Queen(Color.White);
+			} else if (board[i][j] === 'K') {
+				board[i][j] = new King(Color.White);
+			} else if (board[i][j] === 'P') {
+				board[i][j] = new Pawn(Color.White);
+			} else if (board[i][j] === 'w') {
+				board[i][j] = new Rook(Color.Black);
+			} else if (board[i][j] === 's') {
+				board[i][j] = new Knight(Color.Black);
+			} else if (board[i][j] === 'g') {
+				board[i][j] = new Bishop(Color.Black);
+			} else if (board[i][j] === 'h') {
+				board[i][j] = new Queen(Color.Black);
+			} else if (board[i][j] === 'k') {
+				board[i][j] = new King(Color.Black);
+			} else if (board[i][j] === 'p') {
+				board[i][j] = new Pawn(Color.Black);
+			}
 		}
-		console.log(s);
-		s = "";
 	}
 }
 
-boardAssign(data);
+const path = './Token.txt'
+
+function fileExists(path) {
+	try {
+		if (fs.existsSync(path)) {
+			//file exists
+		}
+
+		} catch(err) {
+			//file doesnt exist
+			console.error(err);
+		}
+		
+}

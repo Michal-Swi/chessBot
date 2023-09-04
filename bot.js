@@ -2,7 +2,9 @@ const { Client } = require('discord.js');
 const fs = require('fs');
 const bot = new Client();
 
-const BOT_TOKEN = 'MTA1NjU0OTM1NzI1MzU2MjQ4MQ.GlToiH.XdgD_A5Q2g3kR-uTOi8PQqXQgw8tTx0s1CoBBQ';
+let token = fs.readFileSync('Token.txt', 'utf8');
+
+const BOT_TOKEN = token;
 bot.login(BOT_TOKEN);
 
 bot.on('ready', () => {
@@ -16,6 +18,17 @@ function boardPrint(message) {
 			sub.forEach(char => s += char)
 			message.channel.send(s);
 	});
+}
+
+function trim(s) {
+	let sReturn = "";
+
+	for (let i = 0; i < s.length; i++) {
+		if (s[i] === ' ') continue;
+		else sReturn += s[i];
+	}
+
+	return sReturn;
 }
 
 let players = new Map();
