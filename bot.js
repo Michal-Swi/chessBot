@@ -69,6 +69,7 @@ function boardAssign(data) {
 		} 
 	}
 
+	//setting the array with OOP
 	for (let i = 0; i < 8; i++) {
 		for (let j = 0; j < 8; j++) {
 			if (board[i][j] === 'W') {
@@ -98,20 +99,50 @@ function boardAssign(data) {
 			}
 		}
 	}
+
+	return board;
+}
+
+function determineColor(a, ch) {
+	if (!(a instanceof Piece)) return false;
+	if (a.color) return ch.toUpperCase(); //using this function on upper case letters with this functions doesn't affect it
+	return ch; //lower case by deafult!
 }
 
 let players = new Map();
 let board = new Map();
 let temporaryPlayers = [null, null];
 
-function notPlaying(a, b) {
-	if (players[temporaryPlayers[0]] === 0 || players[temporaryPlayers[0]] === undefined) {
-		if (players[temporaryPlayers[1]] === 1 || players[temporaryPlayers[1]] === undefined) {
-			return true;
-		}
+function playing(a, b) {
+	if (players[a] === 0 || players[a] === undefined) return false;
+	if (players[b] === 0 || players[b] === undefined) return false;
+	return true;
+}
+
+function toChar(a) {
+	if (!(a instanceof Piece)) return 'O';
+
+	if (a instanceof Rook) return determineColor(a, 'r');
+	if (a instanceof Knight) return determineColor(a, 's');
+	if (a instanceof King) return determineColor(a, 'k');
+	if (a instanceof Bishop) return determineColor(a, 'b');
+	if (a instanceof Queen) return determineColor(a, 'h');
+	return determineColor(a, 'p');
+} 
+
+function printBoard(a, b, message) {
+	if (players[a] !== players[b]) {
+		message.channel.send("FATAL ERROR"); //the players don't match
+		return -1;
 	}
 
-	return false;
+	for (let i = 0; i < 8; i++) {
+		let s = "";
+		for (let j = 0; j < 8; j++) {
+			s += toChar(board[a][i][j]);
+		}
+		message.channel.send(s);
+	}
 }
 
 bot.on('message', (message) => {
@@ -133,7 +164,7 @@ bot.on('message', (message) => {
 
 	if (message.content === '!play' && temporaryPlayers[0] === null) {
 		temporaryPlayers[0] = message.author.id;
-	} else if (message.content === '!play' && temporaryPlayers[0] !== null && notPlaying(temporaryPlayers[0], temporaryPlayers[1])) {
+	} else if (message.content === '!play' && temporaryPlayers[0] !== null && !(playing(temporaryPlayers[0], temporaryPlayers[1])) && message.author.id !== temporaryPlayers[0]) {
 		temporaryPlayers[1] = message.author.id;
 
 		message.channel.send(`Player 1 <@${temporaryPlayers[0]}>`);
@@ -145,11 +176,12 @@ bot.on('message', (message) => {
 		board[temporaryPlayers[0]] = boardAssign(data);
 		board[temporaryPlayers[1]] = boardAssign(data);
 
-		temporaryPlayers = [null, null];
-
-		// printBoard(board[temporaryPlayers[0]);		
+		console.log(board[temporaryPlayers[0]][0][0]);
 
 		// console.log(message.guild.name);
 		message.channel.send('The game will begin shortly!');
+		printBoard(temporaryPlayers[0], temporaryPlayers[1], message);	
+
+		temporaryPlayers = [null, null];	
 	}
 });
